@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/material-design-icons/3.0.1/iconfont/material-icons.min.css"
+        integrity="sha256-x8PYmLKD83R9T/sYmJn1j3is/chhJdySyhet/JuHnfY=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/1.4.0/tailwind.min.css"
+        integrity="sha256-CAI/7ThhltsmP2L2zKBYa7FknB3ZwFbD0nqL8FCdxdc=" crossorigin="anonymous" />
+    <link rel="icon" type="x-icon" href="img/16724987557358.png">
+    <title>Database</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 50px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            margin-top: 0;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 0;
+            color: #333;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        select,
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            color: white;
+            cursor: pointer;
+        }
+
+        .error {
+            color: red;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        #appointmentsContainer {
+            max-width: 600px;
+            margin: 30px auto;
+            padding: 20px;
+        }
+
+
+        #appointmentsTable th,
+        #appointmentsTable td {
+            padding: 8px;
+            text-align: left;
+        }
+
+
+
+
+        .deleteButton {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .deleteButton:hover {
+            background-color: #d32f2f;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container" id="inputform" style="display: block;">
+        <h2 class="font-bold text-2xl">Database Access </h2>
+        <form id="loginForm">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+
+            <input class="bg-orange-500" type="submit" value="Login">
+        </form>
+        <p id="errorMessage" class="error"></p>
+    </div>
+
+    <div id="appointmentsContainer" style="display: none;">
+        <div class="container-name">
+            <h1 class="text-xl font-semibold  underline">Contact Form Data</h1>
+            <table id="appointmentsTable">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Subject</th>
+                        <th>Message</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="appointmentsBody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
+    <script>
+        // Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyCH-f84ScAh46rzknhykqGM5hjDCQgreIw",
+
+            authDomain: "anubhav-wc-f8796.firebaseapp.com",
+
+            databaseURL: "https://anubhav-wc-f8796-default-rtdb.asia-southeast1.firebasedatabase.app",
+
+            projectId: "anubhav-wc-f8796",
+
+            storageBucket: "anubhav-wc-f8796.appspot.com",
+
+            messagingSenderId: "879844841720",
+
+            appId: "1:879844841720:web:2e122c6c37e3493376030d",
+
+            measurementId: "G-LVK4XMVB4R"
+
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        // Get a reference to the authentication and database services
+        var auth = firebase.auth();
+        var database = firebase.database();
+
+        // Handle login form submission
+        document.getElementById("loginForm").addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            var username = document.getElementById("username").value;
+            var password = document.getElementById("password").value;
+
+            // Sign in the doctor with the provided username and password
+            auth.signInWithEmailAndPassword(username, password)
+                .then(function (userCredential) {
+                    // Clear form and display appointments
+                    document.getElementById("loginForm").reset();
+                    document.getElementById("errorMessage").textContent = "";
+                    showAppointments();
+                })
+                .catch(function (error) {
+                    console.error(error);
+                    document.getElementById("errorMessage").textContent = "Invalid username or password.";
+                });
+        });
+
+        // Show appointments if the doctor is authenticated
+        function showAppointments() {
+            var user = auth.currentUser;
+            if (user) {
+                // Show the appointments container
+                document.getElementById("appointmentsContainer").style.display = "block";
+                document.getElementById("inputform").style.display = "none";
+
+                // Retrieve and display the appointments from the database
+                var appointmentsRef = database.ref("forms");
+                appointmentsRef.on("value", function (snapshot) {
+                    var appointments = snapshot.val();
+                    var appointmentsBody = document.getElementById("appointmentsBody");
+                    appointmentsBody.innerHTML = "";
+
+                    if (appointments) {
+                        Object.keys(appointments).forEach(function (key) {
+                            var appointment = appointments[key];
+                            var row = document.createElement("tr");
+                            row.innerHTML = "<td>" + appointment.name + "</td>" +
+                                "<td>" + appointment.email + "</td>" +
+                                "<td>" + appointment.phone + "</td>" +
+                                "<td>" + appointment.subject + "</td>" +
+                                "<td>" + appointment.message + "</td>" +
+                                "<td><button class='deleteButton' onclick='deleteAppointment(\"" + key + "\")'>Delete</button></td>";
+                            appointmentsBody.appendChild(row);
+                        });
+                    }
+                });
+            }
+        }
+
+        // Delete an appointment from the database
+        function deleteAppointment(appointmentId) {
+            var appointmentRef = database.ref("forms/" + appointmentId);
+            appointmentRef.remove()
+                .then(function () {
+                    console.log("Appointment deleted successfully");
+                })
+                .catch(function (error) {
+                    console.error("Error deleting appointment:", error);
+                });
+        }
+    </script>
+</body>
+
+</html>

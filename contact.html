@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/material-design-icons/3.0.1/iconfont/material-icons.min.css"
+        integrity="sha256-x8PYmLKD83R9T/sYmJn1j3is/chhJdySyhet/JuHnfY=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/1.4.0/tailwind.min.css"
+        integrity="sha256-CAI/7ThhltsmP2L2zKBYa7FknB3ZwFbD0nqL8FCdxdc=" crossorigin="anonymous" />
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <link rel="icon" type="x-icon" href="img/16724987557358.png">
+    <title>Anubhav Portfolio | Contact us</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="bg-black">
+    <nav class="flex items-center bg-black p-3 flex-wrap">
+        <a href="/" class="p-2 mr-4 mx-[2rem] sm:mx-[4rem] md:mx-[5rem] lg:mx-[5rem] inline-flex items-center">
+            <div class="text-xl md:text-2xl text-orange-500 font-bold uppercase tracking-wide">ANUBHAV<span
+                    class="text-gray-400">-WC</span></div>
+        </a>
+        <button
+            class="text-white mx-[2rem] sm:mx-[4rem] md:mx-[5rem] lg:mx-[5rem] inline-flex p-3 hover:bg-gray- rounded lg:hidden ml-auto hover:text-white outline-none nav-toggler"
+            data-target="#navigation">
+            <i class="material-icons">menu</i>
+        </button>
+        <div class="hidden mx-[2rem] sm:mx-[4rem] md:mx-[5rem] lg:mx-[5rem] top-navbar w-full lg:inline-flex lg:flex-grow lg:w-auto"
+            id="navigation">
+            <div
+                class="lg:inline-flex lg:flex-row lg:ml-auto lg:w-auto w-full lg:items-center items-start flex flex-col lg:h-auto">
+                <a href="/"
+                    class="lg:inline-flex text-[1.1rem] lg:w-auto w-full px-3 py-2  font-normal text-white items-center justify-center md:hover:border-b-2 md:hover:border-orange-500">
+                    <span>Home</span>
+                </a>
+                <a href="about"
+                    class="lg:inline-flex text-[1.1rem] lg:w-auto w-full px-3 py-2  font-normal text-white items-center justify-center md:hover:border-b-2 md:hover:border-orange-500">
+                    <span>About</span>
+                </a>
+                <a href="hire"
+                    class="lg:inline-flex text-[1.1rem] lg:w-auto w-full px-3 py-2  font-normal text-white items-center justify-center md:hover:border-b-2 md:hover:border-orange-500">
+                    <span>Hire Me</span>
+                </a>
+                <a href="people"
+                    class="lg:inline-flex text-[1.1rem] lg:w-auto w-full px-3 py-2  font-normal text-white items-center justify-center md:hover:border-b-2 md:hover:border-orange-500">
+                    <span>People</span>
+                </a>
+                <a href="contact"
+                    class="lg:inline-flex text-[1.1rem] lg:w-auto w-full px-3 py-2  font-normal text-white items-center justify-center md:hover:border-b-2 md:hover:border-orange-500">
+                    <span>Contact Us</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+    <hr class="border-t border-gray-500 mx-[2rem] sm:mx-[4rem] md:mx-[5rem] lg:mx-[5rem] ">
+    <section class=" bg-black mx-3 ">
+        <div class="py-8 lg:py-16 px-4 mx-auto max-w-screen-md">
+            <div class=" grid place-content-center">
+                <h1 class="font-serif text-orange-500 text-lg md:text-2xl border-b-2 border-gray-600 ">CONTACT US</h1>
+            </div>
+            <form class="space-y-7 mt-8" id="contactForm">
+                <div>
+                    <label for="name" class="block mb-2 text-sm font-medium text-gray-300">Your
+                        Name</label>
+                    <input id="name" type="name" name="name"
+                        class="shadow-sm  border  text-sm rounded-lg  block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white  shadow-sm-light"
+                        placeholder="you name" required>
+                </div>
+                <div>
+                    <label for="number" class="block mb-2 text-sm font-medium text-gray-300">Your
+                        Number</label>
+                    <input id="phone" type="phone" name="phone"
+                        class="shadow-sm  border  text-sm rounded-lg  block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white  shadow-sm-light"
+                        placeholder="your phone number" required>
+                </div>
+                <div>
+                    <label for="email" class="block mb-2 text-sm font-medium text-gray-300">Your
+                        Email</label>
+                    <input id="email" type="email" name="email"
+                        class="shadow-sm  border  text-sm rounded-lg  block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white  shadow-sm-light"
+                        placeholder="example@gmail.com" required>
+                </div>
+                <div>
+                    <label for="subject" class="block mb-2 text-sm font-medium text-gray-300">Subject</label>
+                    <input id="subject" type="text" name="subject"
+                        class="block p-3 w-full text-sm  rounded-lg border  shadow-sm  bg-gray-700 border-gray-600 placeholder-gray-400 text-white  shadow-sm-light"
+                        placeholder="Let us know how we can help you" required>
+                </div>
+                <div class="sm:col-span-2">
+                    <label for="message" class="block mb-2 text-sm font-medium text-gray-400">Your
+                        message</label>
+                    <textarea id="message" name="message" rows="6"
+                        class="block p-2.5 w-full text-sm  rounded-lg shadow-sm borde  bg-gray-700 border-gray-600 placeholder-gray-400 text-white "
+                        placeholder="Leave a comment..."></textarea>
+                </div>
+                <button type="submit"
+                    class=" submit py-3 px-5 text-sm font-medium text-center text-white rounded-lg bg-primary-700 sm:w-fit hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 bg-gray-700 hover:bg-gray-600 focus:ring-primary-800">Send
+                    message</button>
+            </form>
+        </div>
+    </section>
+    <script>
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyCH-f84ScAh46rzknhykqGM5hjDCQgreIw",
+
+            authDomain: "anubhav-wc-f8796.firebaseapp.com",
+
+            databaseURL: "https://anubhav-wc-f8796-default-rtdb.asia-southeast1.firebasedatabase.app",
+
+            projectId: "anubhav-wc-f8796",
+
+            storageBucket: "anubhav-wc-f8796.appspot.com",
+
+            messagingSenderId: "879844841720",
+
+            appId: "1:879844841720:web:2e122c6c37e3493376030d",
+
+            measurementId: "G-LVK4XMVB4R"
+
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        var database = firebase.database();
+
+        var contactForm = document.getElementById('contactForm');
+        contactForm.addEventListener('submit', submitForm);
+
+        function submitForm(event) {
+            event.preventDefault();
+
+            var name = document.getElementById('name').value;
+            var phone = document.getElementById('phone').value;
+            var email = document.getElementById('email').value;
+            var subject = document.getElementById('subject').value;
+            var message = document.getElementById('message').value;
+
+            saveFormToFirebase(name, phone, email, subject, message);
+        }
+
+        function saveFormToFirebase(name, phone, email, subject, message) {
+            var formData = {
+                name: name,
+                phone: phone,
+                email: email,
+                subject: subject,
+                message: message,
+                timestamp: firebase.database.ServerValue.TIMESTAMP  // Add timestamp to form data
+            };
+
+            var newFormRef = database.ref('forms').push();
+            newFormRef.set(formData)
+                .then(function () {
+                    alert('Your message is successfully send. We will contact you soon.');
+                    window.location.replace('https://anubhavwc.tk');
+
+                })
+                .catch(function (error) {
+                    alert('Error saving form data:', error);
+                    // You can display an error message to the user.
+                });
+        }
+
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="./js/script.js"></script>
+</body>
+
+</html>
